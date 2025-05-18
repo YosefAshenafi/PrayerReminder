@@ -40,19 +40,19 @@ export default function DashboardScreen({ navigation }) {
           </View>
           <TouchableOpacity style={styles.prayNowButton}>
             <LinearGradient
-              colors={['#e8f5e9', '#a5d6a7', '#81c784', '#66bb6a']}
+              colors={['#81c784', '#66bb6a', '#43a047', '#2e7d32']}
               style={styles.prayNowGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               locations={[0, 0.3, 0.7, 1]}
             >
-              <MaterialCommunityIcons name="hands-pray" size={36} color="#1b5e20" />
+              <MaterialCommunityIcons name="hands-pray" size={36} color="#ffffff" />
               <Text style={styles.prayNowText}>Pray Now</Text>
             </LinearGradient>
           </TouchableOpacity>
           <LinearGradient
             colors={isDay ? 
-              ['#e8f5e9', '#a5d6a7', '#81c784', '#66bb6a'] : 
+              ['#81c784', '#66bb6a', '#43a047', '#2e7d32'] : 
               ['#1b5e20', '#2e7d32', '#388e3c', '#43a047']}
             style={styles.card}
             start={{ x: 0, y: 0 }}
@@ -68,7 +68,7 @@ export default function DashboardScreen({ navigation }) {
               <MaterialCommunityIcons
                 name={isDay ? 'weather-sunny' : 'weather-night'}
                 size={54}
-                color={isDay ? '#2e7d32' : '#81c784'}
+                color="#ffffff"
                 style={{ shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 8 }}
               />
             </View>
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   prayNowText: {
-    color: '#1b5e20',
+    color: '#ffffff',
     fontSize: 22,
     fontFamily: Platform.select({
       ios: 'Avenir Next',
@@ -376,6 +376,7 @@ const styles = StyleSheet.create({
     }),
     marginLeft: 16,
     letterSpacing: 0.5,
+    fontWeight: 'bold',
   },
   scrollView: {
     flex: 1,
