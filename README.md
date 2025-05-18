@@ -1,6 +1,6 @@
 # 🙏 Prayer Reminder
 
-![Prayer Reminder Banner](assets/home.png)
+![Prayer Reminder Banner](assets/logo/logo.png)
 
 ## Overview
 Prayer Reminder is a beautifully designed mobile app to help you start and end your day with prayer. Stay organized, inspired, and connected with your faith community through reminders, notes, and more.
