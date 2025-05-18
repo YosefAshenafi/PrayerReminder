@@ -1,123 +1,115 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Switch, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import Header from '../components/Header';
 
-export default function SettingsScreen({ navigation }) {
-  const [notifications, setNotifications] = useState({
-    morning: true,
-    noon: true,
-    evening: true,
-    night: true,
-  });
-
-  const [preferences, setPreferences] = useState({
-    darkMode: false,
-    soundEnabled: true,
-    vibrationEnabled: true,
-  });
-
-  const toggleNotification = (time) => {
-    setNotifications(prev => ({
-      ...prev,
-      [time]: !prev[time]
-    }));
-  };
-
-  const togglePreference = (pref) => {
-    setPreferences(prev => ({
-      ...prev,
-      [pref]: !prev[pref]
-    }));
-  };
+export default function SettingsScreen() {
+  const [pushNotifications, setPushNotifications] = useState(true);
+  const [verseNotifications, setVerseNotifications] = useState(false);
+  const [prayerRequestNotifications, setPrayerRequestNotifications] = useState(false);
+  const [communityPrayerNotifications, setCommunityPrayerNotifications] = useState(false);
+  const [eventNotifications, setEventNotifications] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(false);
+  const [sound, setSound] = useState(true);
+  const [vibration, setVibration] = useState(true);
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-      <Header 
-        title="Settings" 
-        showSettings={false} 
-        showBack={true}
-        navigation={navigation} 
-      />
-
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Prayer Time Notifications</Text>
-          {Object.entries(notifications).map(([time, enabled]) => (
-            <View key={time} style={styles.settingRow}>
-              <View style={styles.settingInfo}>
-                <Text style={styles.settingLabel}>
-                  {time.charAt(0).toUpperCase() + time.slice(1)} Prayer
-                </Text>
-                <Text style={styles.settingDescription}>
-                  Receive reminders for {time} prayer time
-                </Text>
-              </View>
-              <Switch
-                value={enabled}
-                onValueChange={() => toggleNotification(time)}
-                trackColor={{ false: '#767577', true: '#22A45D' }}
-                thumbColor={enabled ? '#fff' : '#f4f3f4'}
-              />
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>App Preferences</Text>
+          <Text style={styles.sectionTitle}>Notifications</Text>
           <View style={styles.settingRow}>
-            <View style={styles.settingInfo}>
-              <Text style={styles.settingLabel}>Dark Mode</Text>
-              <Text style={styles.settingDescription}>Enable dark theme</Text>
-            </View>
+            <Text style={styles.settingLabel}>Push Notifications</Text>
             <Switch
-              value={preferences.darkMode}
-              onValueChange={() => togglePreference('darkMode')}
+              value={pushNotifications}
+              onValueChange={setPushNotifications}
               trackColor={{ false: '#767577', true: '#22A45D' }}
-              thumbColor={preferences.darkMode ? '#fff' : '#f4f3f4'}
+              thumbColor={pushNotifications ? '#fff' : '#f4f3f4'}
             />
           </View>
           <View style={styles.settingRow}>
-            <View style={styles.settingInfo}>
-              <Text style={styles.settingLabel}>Sound</Text>
-              <Text style={styles.settingDescription}>Enable notification sounds</Text>
-            </View>
+            <Text style={styles.settingLabel}>Daily Verse Notification</Text>
             <Switch
-              value={preferences.soundEnabled}
-              onValueChange={() => togglePreference('soundEnabled')}
+              value={verseNotifications}
+              onValueChange={setVerseNotifications}
               trackColor={{ false: '#767577', true: '#22A45D' }}
-              thumbColor={preferences.soundEnabled ? '#fff' : '#f4f3f4'}
+              thumbColor={verseNotifications ? '#fff' : '#f4f3f4'}
             />
           </View>
           <View style={styles.settingRow}>
-            <View style={styles.settingInfo}>
-              <Text style={styles.settingLabel}>Vibration</Text>
-              <Text style={styles.settingDescription}>Enable vibration alerts</Text>
-            </View>
+            <Text style={styles.settingLabel}>Prayer Request Notifications</Text>
             <Switch
-              value={preferences.vibrationEnabled}
-              onValueChange={() => togglePreference('vibrationEnabled')}
+              value={prayerRequestNotifications}
+              onValueChange={setPrayerRequestNotifications}
               trackColor={{ false: '#767577', true: '#22A45D' }}
-              thumbColor={preferences.vibrationEnabled ? '#fff' : '#f4f3f4'}
+              thumbColor={prayerRequestNotifications ? '#fff' : '#f4f3f4'}
+            />
+          </View>
+          <View style={styles.settingRow}>
+            <Text style={styles.settingLabel}>Community Prayer Notifications</Text>
+            <Switch
+              value={communityPrayerNotifications}
+              onValueChange={setCommunityPrayerNotifications}
+              trackColor={{ false: '#767577', true: '#22A45D' }}
+              thumbColor={communityPrayerNotifications ? '#fff' : '#f4f3f4'}
+            />
+          </View>
+          <View style={styles.settingRow}>
+            <Text style={styles.settingLabel}>Special Event Notifications</Text>
+            <Switch
+              value={eventNotifications}
+              onValueChange={setEventNotifications}
+              trackColor={{ false: '#767577', true: '#22A45D' }}
+              thumbColor={eventNotifications ? '#fff' : '#f4f3f4'}
             />
           </View>
         </View>
 
+        {/* Appearance Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Appearance</Text>
+          <View style={styles.settingRow}>
+            <Text style={styles.settingLabel}>Dark Theme</Text>
+            <Switch
+              value={darkTheme}
+              onValueChange={setDarkTheme}
+              trackColor={{ false: '#767577', true: '#22A45D' }}
+              thumbColor={darkTheme ? '#fff' : '#f4f3f4'}
+            />
+          </View>
+        </View>
+
+        {/* General Preferences Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>General Preferences</Text>
+          <View style={styles.settingRow}>
+            <Text style={styles.settingLabel}>Sound</Text>
+            <Switch
+              value={sound}
+              onValueChange={setSound}
+              trackColor={{ false: '#767577', true: '#22A45D' }}
+              thumbColor={sound ? '#fff' : '#f4f3f4'}
+            />
+          </View>
+          <View style={styles.settingRow}>
+            <Text style={styles.settingLabel}>Vibration</Text>
+            <Switch
+              value={vibration}
+              onValueChange={setVibration}
+              trackColor={{ false: '#767577', true: '#22A45D' }}
+              thumbColor={vibration ? '#fff' : '#f4f3f4'}
+            />
+          </View>
+        </View>
+
+        {/* About Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>About</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Privacy Policy</Text>
-            <Ionicons name="chevron-forward" size={20} color="#3498db" />
+          <Text style={styles.settingDescription}>Prayer Reminder App v1.0.0</Text>
+          <TouchableOpacity style={styles.linkButton}>
+            <Text style={styles.linkText}>Privacy Policy</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Terms of Service</Text>
-            <Ionicons name="chevron-forward" size={20} color="#3498db" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Version 1.0.0</Text>
-            <Ionicons name="chevron-forward" size={20} color="#3498db" />
+          <TouchableOpacity style={styles.linkButton}>
+            <Text style={styles.linkText}>Contact Support</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -128,54 +120,48 @@ export default function SettingsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fff',
   },
   scrollView: {
     flex: 1,
   },
+  scrollContent: {
+    paddingTop: 0,
+    marginTop: -20,
+  },
   section: {
-    padding: 16,
+    padding: 18,
     borderBottomWidth: 1,
     borderBottomColor: '#e9ecef',
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '700',
     color: '#2c3e50',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   settingRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
-  },
-  settingInfo: {
-    flex: 1,
-    marginRight: 16,
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
   settingLabel: {
     fontSize: 16,
     fontWeight: '500',
     color: '#2c3e50',
-    marginBottom: 4,
   },
   settingDescription: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#7f8c8d',
+    marginBottom: 4,
   },
-  button: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
+  linkButton: {
+    marginTop: 8,
   },
-  buttonText: {
-    fontSize: 16,
+  linkText: {
     color: '#3498db',
+    fontSize: 15,
+    fontWeight: '500',
   },
 }); 
