@@ -1,197 +1,107 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
 export default function HomeScreen({ navigation }) {
-  const prayerTimes = {
-    morning: '6:00 AM',
-    noon: '12:00 PM',
-    evening: '6:00 PM',
-    night: '9:00 PM'
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.header}>
-          <Text style={styles.welcomeText}>Welcome</Text>
-          <Text style={styles.subtitle}>Your Daily Prayer Companion</Text>
+    <View style={styles.root}>
+      <SafeAreaView style={styles.safeArea}>
+        <Text style={styles.appName}>Prayer Reminder</Text>
+        <Text style={styles.headline}>Start</Text>
+        <Text style={styles.headline}>Your Day With</Text>
+        <Text style={styles.headline}>Prayer</Text>
+        <View style={styles.centerContent}>
+          <TouchableOpacity style={styles.getStartedBtn} onPress={() => navigation.navigate('Dashboard')}>
+            <Text style={styles.getStartedText}>Get Started</Text>
+          </TouchableOpacity>
         </View>
-
-        <View style={styles.verseContainer}>
-          <Text style={styles.verseText}>
-            "Rejoice always, pray continually, give thanks in all circumstances; for this is God's will for you in Christ Jesus."
-          </Text>
-          <Text style={styles.verseReference}>- 1 Thessalonians 5:16-18</Text>
-        </View>
-
-        <View style={styles.prayerTimesContainer}>
-          <Text style={styles.sectionTitle}>Daily Prayer Times</Text>
-          {Object.entries(prayerTimes).map(([prayer, time]) => (
-            <View key={prayer} style={styles.prayerTimeRow}>
-              <Text style={styles.prayerName}>{prayer.charAt(0).toUpperCase() + prayer.slice(1)} Prayer</Text>
-              <Text style={styles.prayerTime}>{time}</Text>
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.quickActions}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={styles.actionButtons}>
-            <TouchableOpacity 
-              style={styles.actionButton}
-              onPress={() => navigation.navigate('PrayerList')}
-            >
-              <Text style={styles.actionButtonText}>Prayer List</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={styles.actionButton}
-              onPress={() => navigation.navigate('BibleVerse')}
-            >
-              <Text style={styles.actionButtonText}>Bible Verse</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={styles.actionButton}
-              onPress={() => navigation.navigate('Settings')}
-            >
-              <Text style={styles.actionButtonText}>Settings</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.featuresContainer}>
-          <Text style={styles.sectionTitle}>Today's Focus</Text>
-          <View style={styles.featureCard}>
-            <Text style={styles.featureTitle}>Gratitude Prayer</Text>
-            <Text style={styles.featureDescription}>
-              Take a moment to thank God for His blessings and grace in your life.
-            </Text>
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+      {/* Curved white overlay at the bottom left */}
+      <View style={styles.curveOverlay} />
+      {/* Large image at the bottom right, partially visible */}
+      <Image
+        source={require('../../assets/home.png')}
+        style={styles.bottomImage}
+        resizeMode="contain"
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fff',
   },
-  scrollView: {
-    flex: 1,
+  safeArea: {
+    zIndex: 2,
+    backgroundColor: 'transparent',
+    paddingTop: 15,
   },
-  header: {
-    padding: 20,
-    paddingTop: 40,
-    alignItems: 'center',
-  },
-  welcomeText: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 18,
-    color: '#7f8c8d',
-    marginBottom: 20,
-  },
-  verseContainer: {
-    backgroundColor: '#f8f9fa',
-    borderRadius: 15,
-    padding: 20,
-    margin: 20,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#e9ecef',
-  },
-  verseText: {
-    fontSize: 18,
-    color: '#2c3e50',
-    textAlign: 'center',
-    fontStyle: 'italic',
-    lineHeight: 26,
-  },
-  verseReference: {
-    fontSize: 16,
-    color: '#7f8c8d',
-    marginTop: 10,
-  },
-  prayerTimesContainer: {
-    backgroundColor: '#f8f9fa',
-    borderRadius: 15,
-    padding: 20,
-    margin: 20,
-    borderWidth: 1,
-    borderColor: '#e9ecef',
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#2c3e50',
-    marginBottom: 15,
-  },
-  prayerTimeRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
-  },
-  prayerName: {
-    fontSize: 18,
-    color: '#2c3e50',
-    fontWeight: '500',
-  },
-  prayerTime: {
-    fontSize: 18,
-    color: '#7f8c8d',
-  },
-  quickActions: {
-    padding: 20,
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-  actionButton: {
-    backgroundColor: '#3498db',
-    padding: 15,
-    borderRadius: 10,
-    width: '30%',
-    alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  actionButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  featuresContainer: {
-    padding: 20,
-  },
-  featureCard: {
-    backgroundColor: '#f8f9fa',
-    borderRadius: 15,
-    padding: 20,
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: '#e9ecef',
-  },
-  featureTitle: {
+  appName: {
+    color: '#22A45D',
+    fontWeight: '700',
     fontSize: 20,
-    fontWeight: '600',
-    color: '#2c3e50',
-    marginBottom: 10,
+    letterSpacing: 0.5,
+    marginTop: 8,
+    marginLeft: 24,
+    marginBottom: 30,
   },
-  featureDescription: {
-    fontSize: 16,
-    color: '#7f8c8d',
-    lineHeight: 24,
+  headline: {
+    fontSize: 48,
+    fontWeight: '900',
+    color: '#22A45D',
+    marginBottom: 0,
+    textAlign: 'left',
+    paddingHorizontal: 24,
+    lineHeight: 54,
+  },
+  centerContent: {
+    alignItems: 'flex-start',
+    paddingHorizontal: 24,
+    marginBottom: 16,
+    marginTop: 26,
+    zIndex: 3,
+  },
+  getStartedBtn: {
+    backgroundColor: '#22A45D',
+    borderRadius: 24,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    shadowColor: '#22A45D',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    elevation: 4,
+    fontSize: 5,
+  },
+  getStartedText: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 15,
+    letterSpacing: 0.5,
+    fontFamily: 'Calibri',
+  },
+  curveOverlay: {
+    position: 'absolute',
+    left: -SCREEN_WIDTH * 0.3,
+    bottom: 0,
+    width: SCREEN_WIDTH * 0.8,
+    height: SCREEN_HEIGHT * 0.35,
+    backgroundColor: '#fff',
+    borderTopRightRadius: SCREEN_WIDTH * 0.8,
+    borderTopLeftRadius: SCREEN_WIDTH * 0.8,
+    zIndex: 1,
+    transform: [{ rotate: '-15deg' }],
+  },
+  bottomImage: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    left: -30,
+    width: SCREEN_WIDTH * 1.1,
+    height: SCREEN_HEIGHT * 0.50,
+    zIndex: 2,
   },
 }); 

@@ -6,6 +6,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import PrayerListScreen from './src/screens/PrayerListScreen';
 import BibleVerseScreen from './src/screens/BibleVerseScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import DashboardScreen from './src/screens/DashboardScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,11 @@ export default function App() {
           name="Settings" 
           component={SettingsScreen}
           options={{ title: 'Settings' }}
+        />
+        <Stack.Screen 
+          name="Dashboard" 
+          component={DashboardScreen}
+          options={{ title: 'Dashboard', headerShown: false }}
         />
       </Stack.Navigator>
       <StatusBar style="dark" />
