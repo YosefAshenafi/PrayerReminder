@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -21,7 +21,6 @@ export default function DashboardScreen() {
     return () => clearInterval(timer);
   }, []);
 
-  // Determine if it's day or night for icon
   const hour = currentTime.getHours();
   const isDay = hour >= 6 && hour < 18;
   const timeString = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -140,7 +139,7 @@ function FeatureBox({ label }) {
 
   return (
     <TouchableOpacity style={styles.featureBox}>
-      <View style={styles.iconContainer}>
+      <View style={styles.featureIconContainer}>
         {getIcon()}
       </View>
       <Text style={styles.featureLabel}>{label}</Text>
@@ -158,12 +157,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   greeting: {
-    fontSize: 22,
-    fontWeight: '600',
+    fontSize: 26,
+    fontFamily: Platform.select({
+      ios: 'Avenir Next',
+      android: 'sans-serif-light',
+    }),
     marginBottom: 18,
     color: '#2c3e50',
     marginVertical: 30,
     textAlign: 'left',
+    letterSpacing: 0.3,
   },
   card: {
     borderRadius: 18,
@@ -181,19 +184,31 @@ const styles = StyleSheet.create({
   eventTitle: {
     fontSize: 16,
     color: '#fff',
-    fontWeight: '700',
+    fontFamily: Platform.select({
+      ios: 'Avenir Next',
+      android: 'sans-serif-medium',
+    }),
+    letterSpacing: 0.5,
   },
   eventTime: {
     fontSize: 32,
     color: '#fff',
-    fontWeight: '900',
+    fontFamily: Platform.select({
+      ios: 'Avenir Next',
+      android: 'sans-serif-medium',
+    }),
     marginVertical: 2,
     letterSpacing: 1,
   },
   eventSub: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#fff',
     opacity: 0.85,
+    fontFamily: Platform.select({
+      ios: 'Avenir Next',
+      android: 'sans-serif',
+    }),
+    letterSpacing: 0.3,
   },
   iconContainer: {
     marginLeft: 16,
@@ -221,11 +236,22 @@ const styles = StyleSheet.create({
     elevation: 2,
     padding: 12,
   },
+  featureIconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+    width: '100%',
+  },
   featureLabel: {
     fontSize: 13,
     color: '#2c3e50',
-    fontWeight: '500',
+    fontFamily: Platform.select({
+      ios: 'Avenir Next',
+      android: 'sans-serif-medium',
+    }),
     textAlign: 'center',
+    letterSpacing: 0.3,
+    width: '100%',
   },
   prayerRequestsSection: {
     marginTop: 24,
@@ -238,9 +264,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 20,
+    fontFamily: Platform.select({
+      ios: 'Avenir Next',
+      android: 'sans-serif-medium',
+    }),
     color: '#2c3e50',
+    letterSpacing: 0.5,
   },
   addButton: {
     width: 32,
@@ -265,6 +295,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: '#a5d6a7',
   },
   requestContent: {
     flex: 1,
@@ -274,10 +306,20 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#2c3e50',
     marginBottom: 4,
+    fontFamily: Platform.select({
+      ios: 'Avenir Next',
+      android: 'sans-serif-medium',
+    }),
+    letterSpacing: 0.3,
   },
   requestTime: {
     fontSize: 12,
     color: '#7f8c8d',
+    fontFamily: Platform.select({
+      ios: 'Avenir Next',
+      android: 'sans-serif',
+    }),
+    letterSpacing: 0.2,
   },
   newBadge: {
     backgroundColor: '#e8f5e9',
@@ -288,7 +330,11 @@ const styles = StyleSheet.create({
   newBadgeText: {
     color: '#1b5e20',
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: Platform.select({
+      ios: 'Avenir Next',
+      android: 'sans-serif-medium',
+    }),
+    letterSpacing: 0.3,
   },
   prayNowButton: {
     marginBottom: 20,
@@ -308,9 +354,13 @@ const styles = StyleSheet.create({
   },
   prayNowText: {
     color: '#1b5e20',
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 22,
+    fontFamily: Platform.select({
+      ios: 'Avenir Next',
+      android: 'sans-serif-medium',
+    }),
     marginLeft: 16,
+    letterSpacing: 0.5,
   },
   scrollView: {
     flex: 1,
