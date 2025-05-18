@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialCommunityIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -13,7 +13,7 @@ const samplePrayerRequests = [
   { id: 3, text: "Pray for peace in the Middle East", timestamp: "2 days ago", isNew: false },
 ];
 
-export default function DashboardScreen() {
+export default function DashboardScreen({ navigation }) {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -29,7 +29,15 @@ export default function DashboardScreen() {
     <View style={styles.root}>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          <Text style={styles.greeting}>Blessings to you, Yosef</Text>
+          <View style={styles.greetingContainer}>
+            <Text style={styles.greeting}>Blessings to you, Yosef</Text>
+            <TouchableOpacity 
+              style={styles.settingsButton}
+              onPress={() => navigation.navigate('Settings')}
+            >
+              <Ionicons name="settings-outline" size={24} color="#22A45D" />
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity style={styles.prayNowButton}>
             <LinearGradient
               colors={['#e8f5e9', '#a5d6a7', '#81c784', '#66bb6a']}
@@ -156,17 +164,24 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
   },
+  greetingContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 30,
+  },
   greeting: {
     fontSize: 26,
     fontFamily: Platform.select({
       ios: 'Avenir Next',
       android: 'sans-serif-light',
     }),
-    marginBottom: 18,
     color: '#2c3e50',
-    marginVertical: 30,
     textAlign: 'left',
     letterSpacing: 0.3,
+  },
+  settingsButton: {
+    padding: 8,
   },
   card: {
     borderRadius: 18,

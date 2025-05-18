@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../components/Header';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -7,7 +8,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.root}>
       <SafeAreaView style={styles.safeArea}>
-        <Text style={styles.appName}>Prayer Reminder</Text>
+        <Header title="Prayer Reminder" navigation={navigation} />
         <Text style={styles.headline}>Start</Text>
         <Text style={styles.headline}>Your Day With</Text>
         <Text style={styles.headline}>Prayer</Text>
@@ -38,15 +39,6 @@ const styles = StyleSheet.create({
     zIndex: 2,
     backgroundColor: 'transparent',
     paddingTop: 15,
-  },
-  appName: {
-    color: '#22A45D',
-    fontWeight: '700',
-    fontSize: 20,
-    letterSpacing: 0.5,
-    marginTop: 8,
-    marginLeft: 24,
-    marginBottom: 30,
   },
   headline: {
     fontSize: 48,
