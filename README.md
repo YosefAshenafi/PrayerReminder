@@ -23,10 +23,10 @@ Prayer Reminder is a beautifully designed mobile app to help you start and end y
 ## 📱 Screenshots
 
 ### HomeScreen
-![Onboarding](assets/screenshots/homescreen.png.png)
+<img src="assets/screenshots/homescreen.png" width="300">
 
 ### Dashboard
-![Dashboard](assets/screenshots/dashboard.png)
+<img src="assets/screenshots/dashboard.png" width="300">
 
 ---
 
