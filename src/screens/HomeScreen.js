@@ -8,7 +8,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.root}>
       <SafeAreaView style={styles.safeArea}>
-        <Header title="Prayer Reminder" navigation={navigation} />
+        <Header title="#PrayerReminder" navigation={navigation} />
         <Text style={styles.headline}>Start</Text>
         <Text style={styles.headline}>Your Day With</Text>
         <Text style={styles.headline}>Prayer</Text>

@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function Header({ title, showSettings = true, showBack = false, navigation }) {
@@ -10,7 +10,7 @@ export default function Header({ title, showSettings = true, showBack = false, n
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Ionicons name="chevron-back" size={24} color="#2c3e50" />
+            <Ionicons name="chevron-back" size={24} color="#8B4513" />
           </TouchableOpacity>
         )}
         <Text style={styles.title}>{title}</Text>
@@ -20,7 +20,7 @@ export default function Header({ title, showSettings = true, showBack = false, n
           style={styles.settingsButton}
           onPress={() => navigation.navigate('Settings')}
         >
-          <Ionicons name="settings-outline" size={24} color="#22A45D" />
+          <Ionicons name="settings-outline" size={24} color="#8B4513" />
         </TouchableOpacity>
       )}
     </View>
@@ -44,9 +44,17 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   title: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#2c3e50',
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#8B4513',
+    fontFamily: Platform.select({
+      ios: 'Helvetica Neue',
+      android: 'Roboto',
+    }),
+    letterSpacing: 1,
+    textShadowColor: '#8B4513',
+    // textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   settingsButton: {
     padding: 8,
