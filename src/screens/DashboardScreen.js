@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Platform, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { getPrayerRequests, addPrayerRequest, deletePrayerRequest } from '../utils/storage';
+import { formatDistanceToNow } from 'date-fns';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -15,11 +17,49 @@ const samplePrayerRequests = [
 
 export default function DashboardScreen({ navigation }) {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [prayerRequests, setPrayerRequests] = useState([]);
+  const [isAddingRequest, setIsAddingRequest] = useState(false);
+  const [newRequest, setNewRequest] = useState('');
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    loadPrayerRequests();
     return () => clearInterval(timer);
   }, []);
+
+  const loadPrayerRequests = () => {
+    const requests = getPrayerRequests();
+    setPrayerRequests(requests);
+  };
+
+  const handleAddRequest = () => {
+    if (!newRequest.trim()) {
+      Alert.alert('Error', 'Please enter a prayer request');
+      return;
+    }
+    addPrayerRequest(newRequest.trim());
+    setNewRequest('');
+    setIsAddingRequest(false);
+    loadPrayerRequests();
+  };
+
+  const handleDeleteRequest = (id) => {
+    Alert.alert(
+      'Delete Request',
+      'Are you sure you want to delete this prayer request?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Delete', 
+          style: 'destructive',
+          onPress: () => {
+            deletePrayerRequest(id);
+            loadPrayerRequests();
+          }
+        }
+      ]
+    );
+  };
 
   const hour = currentTime.getHours();
   const isDay = hour >= 6 && hour < 18;
@@ -93,22 +133,56 @@ export default function DashboardScreen({ navigation }) {
           <View style={styles.prayerRequestsSection}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Prayer Requests</Text>
-              <TouchableOpacity style={styles.addButton}>
+              <TouchableOpacity 
+                style={styles.addButton}
+                onPress={() => setIsAddingRequest(true)}
+              >
                 <FontAwesome5 name="plus" size={16} color="#1b5e20" />
               </TouchableOpacity>
             </View>
+            
+            {isAddingRequest && (
+              <View style={styles.addRequestContainer}>
+                <TextInput
+                  style={styles.requestInput}
+                  placeholder="Enter your prayer request..."
+                  value={newRequest}
+                  onChangeText={setNewRequest}
+                  multiline
+                />
+                <View style={styles.addRequestButtons}>
+                  <TouchableOpacity 
+                    style={[styles.addRequestButton, styles.cancelButton]}
+                    onPress={() => {
+                      setIsAddingRequest(false);
+                      setNewRequest('');
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={[styles.addRequestButton, styles.saveButton]}
+                    onPress={handleAddRequest}
+                  >
+                    <Text style={[styles.buttonText, styles.saveButtonText]}>Save</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+
             <View style={styles.requestsList}>
-              {samplePrayerRequests.map((request) => (
-                <TouchableOpacity key={request.id} style={styles.requestCard}>
+              {prayerRequests.map((request) => (
+                <TouchableOpacity 
+                  key={request.id} 
+                  style={styles.requestCard}
+                  onLongPress={() => handleDeleteRequest(request.id)}
+                >
                   <View style={styles.requestContent}>
                     <Text style={styles.requestText}>{request.text}</Text>
-                    <Text style={styles.requestTime}>{request.timestamp}</Text>
+                    <Text style={styles.requestTime}>
+                      {formatDistanceToNow(new Date(request.createdAt), { addSuffix: true })}
+                    </Text>
                   </View>
-                  {request.isNew && (
-                    <View style={styles.newBadge}>
-                      <Text style={styles.newBadgeText}>New</Text>
-                    </View>
-                  )}
                 </TouchableOpacity>
               ))}
             </View>
@@ -336,20 +410,48 @@ const styles = StyleSheet.create({
     }),
     letterSpacing: 0.2,
   },
-  newBadge: {
-    backgroundColor: '#e8f5e9',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+  addRequestContainer: {
+    backgroundColor: '#fff',
     borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  newBadgeText: {
-    color: '#1b5e20',
-    fontSize: 12,
-    fontFamily: Platform.select({
-      ios: 'Avenir Next',
-      android: 'sans-serif-medium',
-    }),
-    letterSpacing: 0.3,
+  requestInput: {
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    borderRadius: 8,
+    padding: 12,
+    minHeight: 80,
+    textAlignVertical: 'top',
+    marginBottom: 12,
+  },
+  addRequestButtons: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 12,
+  },
+  addRequestButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+  },
+  cancelButton: {
+    backgroundColor: '#f5f5f5',
+  },
+  saveButton: {
+    backgroundColor: '#1b5e20',
+  },
+  buttonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+  },
+  saveButtonText: {
+    color: '#fff',
   },
   prayNowButton: {
     marginBottom: 20,
